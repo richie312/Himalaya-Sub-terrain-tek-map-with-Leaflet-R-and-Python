@@ -1,8 +1,7 @@
 ## Load the library
-setwd('C:/Users/aritra.chatterjee/Desktop/Trek_Maps')
-library(ggmap)
+#setwd('C:/Users/aritra.chatterjee/Desktop/Trek_Maps')
 library(leaflet)
-
+library(htmlwidgets)
 ## Get the lat and lon for the camping locations
 
 sandakpu_loc = read.csv('sandakpu_loc.csv',stringsAsFactors = FALSE)
@@ -54,7 +53,7 @@ get_colors<-function(Altitude){
 
 
 ## Plot the hiking location in leaflet
-leaflet(sandakpu_loc)%>%addProviderTiles(providers$OpenStreetMap)%>%
+map_plot<-leaflet(sandakpu_loc)%>%addProviderTiles(providers$OpenStreetMap)%>%
   addCircleMarkers(lng = sandakpu_loc$lon,lat = sandakpu_loc$lat,radius=20,
                    opacity = 0.8,
                    fillColor = get_colors(sandakpu_loc$Altitude),
@@ -62,7 +61,10 @@ leaflet(sandakpu_loc)%>%addProviderTiles(providers$OpenStreetMap)%>%
                    popup = popup_tpl,
                    popupOptions(maxWidth = 500, minWidth = 100, maxHeight = NULL,
                                 autoPan = FALSE))%>%
-addPolylines(map, lng=sandakpu_loc$lon,lat=sandakpu_loc$lat, color=sandakpu_loc$colors)
+addPolylines(lng=sandakpu_loc$lon,lat=sandakpu_loc$lat, color=sandakpu_loc$colors)
 
 
+##Create the plot
+
+htmlwidgets::saveWidget(map_plot,'sandakpup_trek_map.html')
 

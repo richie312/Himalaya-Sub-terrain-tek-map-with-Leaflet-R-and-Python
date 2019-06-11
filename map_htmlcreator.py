@@ -10,14 +10,12 @@ import json
 os.chdir(r'C:\Users\aritra.chatterjee\Desktop\Trek_Maps')
 import subprocess
 
-# =============================================================================
-# """ Run the Documentation file with R"""
-# r_home = "C:/PROGRA~1/R/R-35~1.2/bin/x64/Rscript"
-# arg = '--vanilla'
-# path2script = r'C:\Users\aritra.chatterjee\OneDrive\Trek_Maps'
-# retcode = subprocess.call([r_home, arg, path2script], shell=True)
-# 
-# =============================================================================
+""" Run the Documentation file with R"""
+r_home = "C:/PROGRA~1/R/R-35~1.2/bin/x64/Rscript"
+arg = '--vanilla'
+path2script = r'C:\Users\aritra.chatterjee\Desktop\Trek_Maps\sandakpu.R'
+retcode = subprocess.call([r_home, arg, path2script], shell=True)
+
 
 """ Add the code for mobile view comaptibility below the html head tag"""
 
@@ -57,7 +55,7 @@ port = 465
 
 def send_mail(username, password, from_addr, to_addrs, msg):
     context = ssl.create_default_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com", port) as server:
+    with smtplib.SMTP_SSL("smtp.gmail.com", port,context=context) as server:
         server.login(username, password)
         server.sendmail(from_addr, to_addrs, msg.as_string())
 
@@ -67,7 +65,7 @@ def mailto(email_list):
     username=oauth['username']
     password  = oauth['password']
     fromaddr = username
-    file_to_attach = r"C:\Users\aritra.chatterjee\OneDrive\Trek_Maps\sandakpup_trek_map.html" 
+    file_to_attach = r"C:\Users\aritra.chatterjee\Desktop\Trek_Maps\sandakpup_trek_map.html" 
     Body =   """<!DOCTYPE html>
                 <html>
                 <head>
@@ -97,7 +95,10 @@ def mailto(email_list):
                 </html>
                 """
     Body += u'<h5> Hi Richie,</h5>'            
-    Body += u'<p>Please find the attached html map file.</p>'
+    Body += u'''<p>Please find the attached html map file.
+                   Mobile: Open it with Firefox browser.
+                   Laptop: Open it with any browser, recommended.                      
+    </p>'''
     
     for i in range(len(email_list)):
         msg = MIMEMultipart()
@@ -117,6 +118,6 @@ def mailto(email_list):
             
         send_mail(username=username, password=password, from_addr=fromaddr, to_addrs=email_list[i], msg=msg)
 
-email_list = ['richie.chatterjee31@gmail.com','arindamsaccount@gmail.com']
-
+email_list = ['richie.chatterjee31@gmail.com']
+#'arindamsaccount@gmail.com','Pratyush.biswas@gmail.com'
 mailto(email_list)
