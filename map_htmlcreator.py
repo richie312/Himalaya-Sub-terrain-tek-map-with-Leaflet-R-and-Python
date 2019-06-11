@@ -94,13 +94,14 @@ def mailto(email_list):
                 </body>
                 </html>
                 """
-    Body += u'<h5> Hi Richie,</h5>'            
-    Body += u'''<p>Please find the attached html map file.
-                   Mobile: Open it with Firefox browser.
-                   Laptop: Open it with any browser, recommended.                      
-    </p>'''
     
     for i in range(len(email_list)):
+        Body += u'<h5> Hi {name},</h5>'.format(name=email_list[i].split('.')[0])           
+        Body += u'''<p>Please find the attached html map file.
+                   Mobile: Open it with Firefox browser.
+                   Laptop: Open it with any browser, recommended.                      
+                   </p>'''
+    
         msg = MIMEMultipart()
         Mail_Body=MIMEText(Body, 'html')
         msg.attach(Mail_Body)
@@ -118,6 +119,5 @@ def mailto(email_list):
             
         send_mail(username=username, password=password, from_addr=fromaddr, to_addrs=email_list[i], msg=msg)
 
-email_list = ['richie.chatterjee31@gmail.com']
-#'arindamsaccount@gmail.com','Pratyush.biswas@gmail.com'
+email_list = ['richie.chatterjee31@gmail.com','arindamsaccount@gmail.com','Pratyush.biswas@gmail.com']
 mailto(email_list)
