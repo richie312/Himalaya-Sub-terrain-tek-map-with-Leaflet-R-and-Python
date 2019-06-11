@@ -6,7 +6,8 @@ Created on Mon Jun 10 08:47:47 2019
 """
 
 import os 
-os.chdir(r'C:\Users\aritra.chatterjee\OneDrive\Trek_Maps')
+import json
+os.chdir(r'C:\Users\aritra.chatterjee\Desktop\Trek_Maps')
 import subprocess
 
 # =============================================================================
@@ -17,6 +18,9 @@ import subprocess
 # retcode = subprocess.call([r_home, arg, path2script], shell=True)
 # 
 # =============================================================================
+
+""" Add the code for mobile view comaptibility below the html head tag"""
+
 with open('sandakpup_trek_map.html','r') as  file:
     html = file.readlines()
 
@@ -35,7 +39,11 @@ html_file = ''.join(html)
 
 with open('sandakpup_trek_map.html','w') as  file_write:
     file_write.write(''.join(html_file))
-
+    
+""" Read the auth file"""
+with open('auth.txt','r') as file:
+    oauth = json.load(file)
+    
 import os, smtplib, ssl, getpass
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
@@ -56,8 +64,8 @@ def send_mail(username, password, from_addr, to_addrs, msg):
 
 
 def mailto(email_list):
-    username="richie.chatterjee31@gmail.com"
-    password  = "Anahata@123"
+    username=oauth['username']
+    password  = oauth['password']
     fromaddr = username
     file_to_attach = r"C:\Users\aritra.chatterjee\OneDrive\Trek_Maps\sandakpup_trek_map.html" 
     Body =   """<!DOCTYPE html>
@@ -95,7 +103,7 @@ def mailto(email_list):
         msg = MIMEMultipart()
         Mail_Body=MIMEText(Body, 'html')
         msg.attach(Mail_Body)
-        msg['From'] = 'richie.chatterjee31@gmail.com'
+        msg['From'] = username
         msg['To'] = email_list[i]
         msg['Subject'] = "Sandakpu Trek Map Details"
         """Attach the file"""
